@@ -281,6 +281,44 @@ textarea { resize: vertical; line-height: 1.6; }
   pointer-events: none;
 }
 
+/* ===== SVL SIGN TOGGLE ===== */
+.svl-wrapper {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.svl-wrapper input {
+  flex: 1;
+}
+
+.btn-sign {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--yellow);
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+}
+
+.btn-sign:hover,
+.btn-sign:active {
+  background: var(--yellow);
+  color: #0a0f1a;
+  border-color: var(--yellow);
+  box-shadow: 0 0 12px rgba(255,215,64,0.4);
+}
+
 /* ===== DIVIDER ===== */
 .divider {
   display: flex;

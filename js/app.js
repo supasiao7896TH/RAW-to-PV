@@ -47,6 +47,25 @@ function parseSVL(val) {
 }
 
 // ──────────────────────────────────────────────
+// ± SIGN TOGGLE (for SVL on Samsung keyboard)
+// ──────────────────────────────────────────────
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.btn-sign');
+  if (!btn) return;
+  const input = document.getElementById(btn.dataset.target);
+  if (!input) return;
+  const val = input.value.trim();
+  if (val === '' || val === '-') {
+    input.value = val === '-' ? '' : '-';
+  } else {
+    const n = parseFloat(val);
+    if (!isNaN(n)) input.value = (-n).toString();
+    else input.value = val.startsWith('-') ? val.slice(1) : '-' + val;
+  }
+  input.focus();
+});
+
+// ──────────────────────────────────────────────
 // TABS
 // ──────────────────────────────────────────────
 document.querySelectorAll('.tab-btn').forEach(btn => {

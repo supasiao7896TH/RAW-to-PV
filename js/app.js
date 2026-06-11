@@ -39,6 +39,13 @@ function calcPV(rawPct, svh, svl) {
   return svl + (rawPct / 100) * (svh - svl);
 }
 
+// Parse SVL from text input — allows negative like -600
+function parseSVL(val) {
+  if (val === '' || val === null || val === undefined) return 0;
+  const n = parseFloat(String(val).trim());
+  return isNaN(n) ? NaN : n;
+}
+
 // ──────────────────────────────────────────────
 // TABS
 // ──────────────────────────────────────────────
@@ -123,8 +130,7 @@ document.getElementById('calc-raw').addEventListener('keydown', e => {
 function runCalc() {
   const rawPct   = parseFloat(document.getElementById('calc-raw').value);
   const svh      = parseFloat(document.getElementById('calc-svh').value);
-  const svlInput = document.getElementById('calc-svl').value;
-  const svl      = svlInput === '' ? 0 : parseFloat(svlInput);
+  const svl      = parseSVL(document.getElementById('calc-svl').value);
   const unit     = document.getElementById('calc-unit').value.trim();
   const tagName  = document.getElementById('calc-tag-name').value.trim();
 
@@ -133,6 +139,11 @@ function runCalc() {
 
   if (isNaN(rawPct) || isNaN(svh)) {
     toast('กรุณากรอกค่า RAW% และ SVH', 'error');
+    return;
+  }
+
+  if (isNaN(svl)) {
+    toast('ค่า SVL ไม่ถูกต้อง (ตัวอย่าง: 0 หรือ -600)', 'error');
     return;
   }
 
@@ -282,13 +293,13 @@ function saveModal() {
   const unit  = document.getElementById('modal-unit').value.trim();
   const desc  = document.getElementById('modal-description').value.trim();
   const svhRaw = document.getElementById('modal-svh').value;
-  const svlRaw = document.getElementById('modal-svl').value;
   const svh   = parseFloat(svhRaw);
-  const svl   = svlRaw === '' ? 0 : parseFloat(svlRaw);
+  const svl   = parseSVL(document.getElementById('modal-svl').value);
   const errEl = document.getElementById('modal-error');
 
   if (!name) { showModalError('กรุณากรอก Tag Name'); return; }
   if (svhRaw === '' || isNaN(svh)) { showModalError('กรุณากรอกค่า SVH'); return; }
+  if (isNaN(svl)) { showModalError('ค่า SVL ไม่ถูกต้อง (ตัวอย่าง: 0 หรือ -600)'); return; }
   if (svh <= svl) { showModalError('SVH ต้องมากกว่า SVL'); return; }
 
   const duplicate = tags.find(t => t.name === name && t.id !== editingId);
@@ -400,14 +411,18 @@ document.getElementById('batch-calc-btn').addEventListener('click', runBatch);
 
 function runBatch() {
   const svhVal  = document.getElementById('batch-svh').value;
-  const svlVal  = document.getElementById('batch-svl').value;
   const svh     = parseFloat(svhVal);
-  const svl     = svlVal === '' ? 0 : parseFloat(svlVal);
+  const svl     = parseSVL(document.getElementById('batch-svl').value);
   const unit    = document.getElementById('batch-unit').value.trim();
   const rawText = document.getElementById('batch-raw-input').value;
 
   if (svhVal === '' || isNaN(svh)) {
     toast('กรุณากรอกค่า SVH', 'error');
+    return;
+  }
+
+  if (isNaN(svl)) {
+    toast('ค่า SVL ไม่ถูกต้อง (ตัวอย่าง: 0 หรือ -600)', 'error');
     return;
   }
 

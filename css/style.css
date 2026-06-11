@@ -125,24 +125,30 @@ header h1 {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+.tabs::-webkit-scrollbar { display: none; }
 
 .tab-btn {
   flex: 1;
-  padding: 10px 16px;
+  min-width: 110px;
+  padding: 10px 14px;
   border: none;
   background: transparent;
   color: var(--text-muted);
   border-radius: var(--radius);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 500;
   transition: var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   position: relative;
+  white-space: nowrap;
 }
 
 .tab-btn:hover {
@@ -595,12 +601,14 @@ textarea { resize: vertical; line-height: 1.6; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin-bottom: 16px;
 }
 
 .library-table {
   width: 100%;
+  min-width: 540px;
   border-collapse: collapse;
   font-size: 0.88rem;
 }
@@ -657,6 +665,22 @@ textarea { resize: vertical; line-height: 1.6; }
   gap: 6px;
   justify-content: center;
   flex-wrap: nowrap;
+}
+
+/* Sticky action column */
+.library-table th:last-child,
+.library-table td:last-child {
+  position: sticky;
+  right: 0;
+  background: var(--surface);
+  box-shadow: -4px 0 8px rgba(0,0,0,0.3);
+  z-index: 1;
+}
+.library-table thead th:last-child {
+  background: var(--card);
+}
+.library-table tbody tr:hover td:last-child {
+  background: var(--card-hover);
 }
 
 .empty-state {

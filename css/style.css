@@ -911,6 +911,47 @@ textarea { resize: vertical; line-height: 1.6; }
   margin-top: 8px;
 }
 
+/* ===== MINUS BAR ===== */
+#minus-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 400;
+  padding: 8px 16px 10px;
+  background: var(--surface);
+  border-top: 2px solid var(--yellow);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+}
+
+#minus-bar-btn {
+  width: 100%;
+  padding: 13px 16px;
+  background: var(--yellow);
+  color: #0a0f1a;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: 0.3px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#minus-bar-btn:active {
+  background: #e6c200;
+}
+
+.minus-bar-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+  font-weight: 900;
+}
+
 /* ===== TOAST ===== */
 .toast {
   position: fixed;

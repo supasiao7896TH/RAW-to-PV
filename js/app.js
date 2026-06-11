@@ -47,22 +47,77 @@ function parseSVL(val) {
 }
 
 // ──────────────────────────────────────────────
-// ± SIGN TOGGLE (for SVL on Samsung keyboard)
+// SVL SIGN HELPERS (± button + floating minus bar)
 // ──────────────────────────────────────────────
+function toggleSign(input) {
+  const val = input.value.trim();
+  const n = parseFloat(val);
+  if (!isNaN(n)) {
+    input.value = n === 0 ? val : (-n).toString();
+  } else if (val.startsWith('-')) {
+    input.value = val.slice(1);
+  } else if (val !== '') {
+    input.value = '-' + val;
+  } else {
+    input.value = '-';
+  }
+}
+
+// ± button (desktop / visible button)
 document.addEventListener('click', e => {
   const btn = e.target.closest('.btn-sign');
   if (!btn) return;
   const input = document.getElementById(btn.dataset.target);
   if (!input) return;
-  const val = input.value.trim();
-  if (val === '' || val === '-') {
-    input.value = val === '-' ? '' : '-';
-  } else {
-    const n = parseFloat(val);
-    if (!isNaN(n)) input.value = (-n).toString();
-    else input.value = val.startsWith('-') ? val.slice(1) : '-' + val;
-  }
+  toggleSign(input);
   input.focus();
+});
+
+// Floating minus bar — appears above keyboard when SVL is focused
+const SVL_IDS = ['calc-svl', 'batch-svl', 'modal-svl'];
+const minusBar = document.getElementById('minus-bar');
+const minusBarBtn = document.getElementById('minus-bar-btn');
+let activeSVL = null;
+
+function positionMinusBar() {
+  if (!window.visualViewport) return;
+  const vv = window.visualViewport;
+  const offsetFromBottom = window.innerHeight - (vv.height + vv.offsetTop);
+  minusBar.style.bottom = Math.max(0, offsetFromBottom) + 'px';
+}
+
+function showMinusBar(input) {
+  activeSVL = input;
+  minusBar.style.display = 'block';
+  positionMinusBar();
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', positionMinusBar);
+    window.visualViewport.addEventListener('scroll', positionMinusBar);
+  }
+}
+
+function hideMinusBar() {
+  activeSVL = null;
+  minusBar.style.display = 'none';
+  if (window.visualViewport) {
+    window.visualViewport.removeEventListener('resize', positionMinusBar);
+    window.visualViewport.removeEventListener('scroll', positionMinusBar);
+  }
+}
+
+SVL_IDS.forEach(id => {
+  const inp = document.getElementById(id);
+  inp.addEventListener('focus', () => showMinusBar(inp));
+  inp.addEventListener('blur',  () => setTimeout(() => {
+    if (document.activeElement !== minusBarBtn) hideMinusBar();
+  }, 80));
+});
+
+minusBarBtn.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  if (!activeSVL) return;
+  toggleSign(activeSVL);
+  activeSVL.focus();
 });
 
 // ──────────────────────────────────────────────

@@ -86,7 +86,7 @@
               <label>SVL <span class="label-hint">(ค่าต่ำสุด, พิมพ์ − ได้เลย)</span></label>
               <div class="svl-wrapper">
                 <button class="btn-sign" type="button" data-target="calc-svl" title="สลับ +/−">±</button>
-                <input type="text" inputmode="text" id="calc-svl" placeholder="0" value="0">
+                <input type="text" inputmode="decimal" id="calc-svl" placeholder="0" value="0">
               </div>
             </div>
           </div>
@@ -202,7 +202,7 @@
               <label>SVL <span class="label-hint">(พิมพ์ − ได้เลย)</span></label>
               <div class="svl-wrapper">
                 <button class="btn-sign" type="button" data-target="batch-svl" title="สลับ +/−">±</button>
-                <input type="text" inputmode="text" id="batch-svl" placeholder="0" value="0">
+                <input type="text" inputmode="decimal" id="batch-svl" placeholder="0" value="0">
               </div>
             </div>
             <div class="form-group">
@@ -286,7 +286,7 @@
             <label>SVL <span class="label-hint">(ค่าต่ำสุด, พิมพ์ − ได้เลย)</span></label>
             <div class="svl-wrapper">
               <button class="btn-sign" type="button" data-target="modal-svl" title="สลับ +/−">±</button>
-              <input type="text" inputmode="text" id="modal-svl" placeholder="0" value="0">
+              <input type="text" inputmode="decimal" id="modal-svl" placeholder="0" value="0">
             </div>
           </div>
         </div>
@@ -297,6 +297,14 @@
         <button class="btn-primary" id="modal-save">บันทึก</button>
       </div>
     </div>
+  </div>
+
+  <!-- ===== MINUS BAR (floating above keyboard when SVL focused) ===== -->
+  <div id="minus-bar" style="display:none">
+    <button id="minus-bar-btn" type="button">
+      <span class="minus-bar-icon">−</span>
+      <span class="minus-bar-text">กดเพื่อเปลี่ยนเป็นค่าติดลบ / บวก</span>
+    </button>
   </div>
 
   <!-- ===== TOAST ===== -->

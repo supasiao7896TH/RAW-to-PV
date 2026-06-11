@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAW → PV Calculator | DCS Yokogawa</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="header-title">
+        <span class="header-icon">⚙</span>
+        <div>
+          <h1>RAW → PV Calculator</h1>
+          <p class="header-sub">DCS Yokogawa Tag Converter</p>
+        </div>
+      </div>
+      <div class="header-formula">
+        <span class="formula-label">สูตร:</span>
+        <span class="formula-text">PV = SVL + (RAW% ÷ 100) × (SVH − SVL)</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="calculator">
+        <span class="tab-icon">🔢</span> Calculator
+      </button>
+      <button class="tab-btn" data-tab="library">
+        <span class="tab-icon">📋</span> Tag Library
+        <span class="tag-count" id="tag-count">0</span>
+      </button>
+      <button class="tab-btn" data-tab="batch">
+        <span class="tab-icon">⚡</span> Batch Mode
+      </button>
+    </div>
+
+    <!-- ===== CALCULATOR TAB ===== -->
+    <div id="calculator" class="tab-content active">
+      <div class="calc-layout">
+        <div class="calc-input-panel">
+          <h2 class="panel-title">Input</h2>
+
+          <div class="form-group">
+            <label>เลือก Tag จาก Library</label>
+            <div class="tag-search-wrapper">
+              <input type="text" id="calc-tag-search" placeholder="ค้นหา tag เช่น PC-2731..." autocomplete="off">
+              <div class="tag-dropdown" id="calc-tag-dropdown"></div>
+            </div>
+          </div>
+
+          <div class="divider"><span>หรือกรอกค่าเอง</span></div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tag Name</label>
+              <input type="text" id="calc-tag-name" placeholder="เช่น PC-2731">
+            </div>
+            <div class="form-group">
+              <label>Unit</label>
+              <input type="text" id="calc-unit" placeholder="เช่น bar, °C">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>SVH <span class="label-hint">(ค่าสูงสุด)</span></label>
+              <input type="number" id="calc-svh" placeholder="เช่น 60" step="any">
+            </div>
+            <div class="form-group">
+              <label>SVL <span class="label-hint">(ค่าต่ำสุด)</span></label>
+              <input type="number" id="calc-svl" placeholder="เช่น 0" step="any" value="0">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>RAW Value (%)</label>
+            <div class="raw-input-wrapper">
+              <input type="number" id="calc-raw" placeholder="เช่น 79.2" step="any" min="0" max="100">
+              <span class="input-suffix">%</span>
+            </div>
+          </div>
+
+          <button class="btn-primary btn-lg" id="calc-btn">คำนวณ PV</button>
+        </div>
+
+        <div class="calc-result-panel">
+          <h2 class="panel-title">Result</h2>
+
+          <div class="result-card" id="result-card">
+            <div class="result-empty" id="result-empty">
+              <span class="result-empty-icon">📊</span>
+              <p>กรอกค่า RAW% และ SVH แล้วกดคำนวณ</p>
+            </div>
+            <div class="result-display" id="result-display" style="display:none">
+              <div class="result-tag-name" id="result-tag-name">—</div>
+              <div class="result-pv-label">Process Variable (PV)</div>
+              <div class="result-pv-value">
+                <span id="result-pv-number">—</span>
+                <span id="result-pv-unit" class="result-unit"></span>
+              </div>
+              <div class="result-breakdown" id="result-breakdown"></div>
+              <div class="result-formula" id="result-formula"></div>
+            </div>
+          </div>
+
+          <div class="quick-ref" id="quick-ref" style="display:none">
+            <h3>Quick Reference</h3>
+            <div class="quick-ref-table">
+              <div class="qr-header">
+                <span>RAW%</span>
+                <span>PV</span>
+              </div>
+              <div id="quick-ref-rows"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAG LIBRARY TAB ===== -->
+    <div id="library" class="tab-content">
+      <div class="library-toolbar">
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="lib-search" placeholder="ค้นหา Tag Name หรือ Description...">
+        </div>
+        <button class="btn-primary" id="add-tag-btn">+ เพิ่ม Tag</button>
+      </div>
+
+      <div class="library-table-wrapper">
+        <table class="library-table" id="library-table">
+          <thead>
+            <tr>
+              <th>Tag Name</th>
+              <th>Description</th>
+              <th class="text-right">SVH</th>
+              <th class="text-right">SVL</th>
+              <th>Unit</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="library-tbody">
+            <tr class="empty-row" id="library-empty">
+              <td colspan="6">
+                <div class="empty-state">
+                  <span>📋</span>
+                  <p>ยังไม่มี Tag ในระบบ กดปุ่ม "เพิ่ม Tag" เพื่อเริ่มต้น</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="library-actions">
+        <button class="btn-outline" id="export-csv-btn">⬇ Export CSV</button>
+        <button class="btn-outline" id="import-csv-btn">⬆ Import CSV</button>
+        <input type="file" id="import-file-input" accept=".csv" style="display:none">
+        <button class="btn-danger-outline" id="clear-all-btn">🗑 ล้างทั้งหมด</button>
+      </div>
+    </div>
+
+    <!-- ===== BATCH MODE TAB ===== -->
+    <div id="batch" class="tab-content">
+      <div class="batch-layout">
+        <div class="batch-input-panel">
+          <h2 class="panel-title">Batch Input</h2>
+
+          <div class="form-group">
+            <label>เลือก Tag</label>
+            <div class="tag-search-wrapper">
+              <input type="text" id="batch-tag-search" placeholder="ค้นหา tag..." autocomplete="off">
+              <div class="tag-dropdown" id="batch-tag-dropdown"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>SVH</label>
+              <input type="number" id="batch-svh" placeholder="ค่าสูงสุด" step="any">
+            </div>
+            <div class="form-group">
+              <label>SVL</label>
+              <input type="number" id="batch-svl" placeholder="ค่าต่ำสุด" step="any" value="0">
+            </div>
+            <div class="form-group">
+              <label>Unit</label>
+              <input type="text" id="batch-unit" placeholder="หน่วย">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>RAW Values (%) <span class="label-hint">— ใส่ทีละบรรทัด หรือคั่นด้วย comma</span></label>
+            <textarea id="batch-raw-input" rows="8" placeholder="ตัวอย่าง:&#10;79.2&#10;45.0&#10;100&#10;0&#10;33.5, 67.8, 22.1"></textarea>
+          </div>
+
+          <button class="btn-primary btn-lg" id="batch-calc-btn">คำนวณทั้งหมด</button>
+        </div>
+
+        <div class="batch-result-panel">
+          <h2 class="panel-title">
+            Results
+            <span id="batch-result-count" class="result-count"></span>
+          </h2>
+
+          <div id="batch-empty" class="empty-state">
+            <span>⚡</span>
+            <p>ใส่ค่า RAW% และกดคำนวณ</p>
+          </div>
+
+          <div id="batch-results-wrapper" style="display:none">
+            <div class="batch-table-wrapper">
+              <table class="batch-table" id="batch-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th class="text-right">RAW (%)</th>
+                    <th class="text-right">PV</th>
+                    <th>Unit</th>
+                    <th>Span %</th>
+                  </tr>
+                </thead>
+                <tbody id="batch-tbody"></tbody>
+              </table>
+            </div>
+            <div class="batch-actions">
+              <button class="btn-outline" id="batch-copy-btn">📋 Copy ตาราง</button>
+              <button class="btn-outline" id="batch-export-btn">⬇ Export CSV</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: ADD/EDIT TAG ===== -->
+  <div class="modal-overlay" id="modal-overlay" style="display:none">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-title">เพิ่ม Tag</h3>
+        <button class="modal-close" id="modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tag Name <span class="required">*</span></label>
+            <input type="text" id="modal-tag-name" placeholder="เช่น PC-2731">
+          </div>
+          <div class="form-group">
+            <label>Unit</label>
+            <input type="text" id="modal-unit" placeholder="เช่น bar, °C, %">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" id="modal-description" placeholder="เช่น Pressure Controller Loop 2731">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>SVH <span class="required">*</span> <span class="label-hint">(ค่าสูงสุด)</span></label>
+            <input type="number" id="modal-svh" placeholder="เช่น 60" step="any">
+          </div>
+          <div class="form-group">
+            <label>SVL <span class="label-hint">(ค่าต่ำสุด, default 0)</span></label>
+            <input type="number" id="modal-svl" placeholder="เช่น 0" step="any" value="0">
+          </div>
+        </div>
+        <div id="modal-error" class="modal-error" style="display:none"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" id="modal-cancel">ยกเลิก</button>
+        <button class="btn-primary" id="modal-save">บันทึก</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

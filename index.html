@@ -83,10 +83,10 @@
               <input type="number" id="calc-svh" placeholder="เช่น 60" step="any">
             </div>
             <div class="form-group">
-              <label>SVL <span class="label-hint">(ค่าต่ำสุด)</span></label>
+              <label>SVL <span class="label-hint">(ค่าต่ำสุด, พิมพ์ − ได้เลย)</span></label>
               <div class="svl-wrapper">
                 <button class="btn-sign" type="button" data-target="calc-svl" title="สลับ +/−">±</button>
-                <input type="text" inputmode="decimal" id="calc-svl" placeholder="0" value="0">
+                <input type="text" inputmode="text" id="calc-svl" placeholder="0" value="0">
               </div>
             </div>
           </div>
@@ -199,10 +199,10 @@
               <input type="number" id="batch-svh" placeholder="ค่าสูงสุด" step="any">
             </div>
             <div class="form-group">
-              <label>SVL</label>
+              <label>SVL <span class="label-hint">(พิมพ์ − ได้เลย)</span></label>
               <div class="svl-wrapper">
                 <button class="btn-sign" type="button" data-target="batch-svl" title="สลับ +/−">±</button>
-                <input type="text" inputmode="decimal" id="batch-svl" placeholder="0" value="0">
+                <input type="text" inputmode="text" id="batch-svl" placeholder="0" value="0">
               </div>
             </div>
             <div class="form-group">
@@ -283,10 +283,10 @@
             <input type="number" id="modal-svh" placeholder="เช่น 60" step="any">
           </div>
           <div class="form-group">
-            <label>SVL <span class="label-hint">(ค่าต่ำสุด, default 0)</span></label>
+            <label>SVL <span class="label-hint">(ค่าต่ำสุด, พิมพ์ − ได้เลย)</span></label>
             <div class="svl-wrapper">
               <button class="btn-sign" type="button" data-target="modal-svl" title="สลับ +/−">±</button>
-              <input type="text" inputmode="decimal" id="modal-svl" placeholder="0" value="0">
+              <input type="text" inputmode="text" id="modal-svl" placeholder="0" value="0">
             </div>
           </div>
         </div>

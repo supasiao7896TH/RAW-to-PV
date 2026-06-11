@@ -841,13 +841,11 @@ textarea { resize: vertical; line-height: 1.6; }
   background: rgba(0,0,0,0.7);
   backdrop-filter: blur(4px);
   z-index: 200;
-  display: flex !important;
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
-
-.modal-overlay[style*="display:none"] { display: none !important; }
 
 .modal {
   background: var(--surface);

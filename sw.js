@@ -1,4 +1,4 @@
-const CACHE = 'raw-to-pv-v2';
+const CACHE = 'raw-to-pv-v3';
 const ASSETS = [
   '.',
   'index.html',

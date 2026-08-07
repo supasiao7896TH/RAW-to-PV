@@ -986,29 +986,28 @@ textarea { resize: vertical; line-height: 1.6; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
 
-/* ===== SOICODER BRAND BADGE ===== */
+/* ===== A(i)CODER BRAND BADGE ===== */
 .app-footer {
   display: flex;
   justify-content: center;
   padding: 24px 0 32px;
   border-top: 1px solid var(--surface);
 }
-.soicoder-badge {
+.aicoder-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font-family: 'VT323', ui-monospace, monospace;
 }
-.soicoder-mark {
+.aicoder-mark {
   width: 20px;
   height: 22px;
-  color: #BD93F9;
-  filter: drop-shadow(0 0 3px #BD93F9);
+  filter: drop-shadow(0 0 3px rgba(196,175,255,0.6));
   flex-shrink: 0;
 }
-.soicoder-word {
+.aicoder-word {
   font-size: 1.15rem;
   letter-spacing: .02em;
-  color: #BD93F9;
-  text-shadow: 0 0 6px rgba(189,147,249,.7), 0 0 14px rgba(189,147,249,.4);
+  color: #C4AFFF;
+  text-shadow: 0 0 6px rgba(196,175,255,.7), 0 0 14px rgba(196,175,255,.4);
 }

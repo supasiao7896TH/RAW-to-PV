@@ -24,7 +24,7 @@ Plain HTML/CSS/JS PWA — **no build step, no bundler, no package.json, no frame
   - Shared tag-search-dropdown helper (`setupTagSearch`) reused by both Calculator and Batch tabs.
   - On first load with an empty library, seeds 5 sample tags (see `init()` at the bottom of the file).
 - `css/style.css` — all styling.
-- `manifest.json` / `sw.js` — PWA install + offline support. `sw.js` is a cache-first service worker; its cache name (`CACHE = 'raw-to-pv-v3'`) must be bumped manually whenever a change needs to force-update already-installed instances on mobile.
+- `manifest.json` / `sw.js` — PWA install + offline support. `sw.js` is a cache-first service worker; its cache name (`CACHE = 'raw-to-pv-v4'`, currently — bump the suffix on each edit) must be incremented manually whenever a change needs to force-update already-installed instances on mobile.
 
 This app intentionally does **not** follow the 9-Module IIFE + IndexedDB + Firestore architecture used in other Supasit.A projects — it's a small offline-only single-purpose tool, so plain `localStorage` and a flat script are sufficient here.
 

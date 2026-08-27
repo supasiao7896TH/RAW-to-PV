@@ -132,6 +132,25 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 
 // ──────────────────────────────────────────────
+// THEME TOGGLE (light / dark / [data-theme] override)
+// ──────────────────────────────────────────────
+function setTheme(theme) {
+  if (theme) document.documentElement.setAttribute('data-theme', theme);
+  else document.documentElement.removeAttribute('data-theme');
+  try {
+    if (theme) localStorage.setItem('theme', theme);
+    else localStorage.removeItem('theme');
+  } catch {}
+}
+
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = current === 'dark' || (!current && prefersDark);
+  setTheme(isDark ? 'light' : 'dark');
+});
+
+// ──────────────────────────────────────────────
 // TAG SEARCH DROPDOWN (shared helper)
 // ──────────────────────────────────────────────
 function setupTagSearch(inputId, dropdownId, onSelect) {
@@ -287,9 +306,9 @@ function renderLibrary(query = '') {
       <td class="td-unit">${escHtml(tag.unit || '—')}</td>
       <td>
         <div class="td-actions">
-          <button class="btn-icon use"   data-id="${tag.id}" title="ใช้ใน Calculator">▶ ใช้</button>
-          <button class="btn-icon edit"  data-id="${tag.id}" title="แก้ไข">✏</button>
-          <button class="btn-icon delete" data-id="${tag.id}" title="ลบ">✕</button>
+          <button class="btn-icon use" data-id="${tag.id}" title="ใช้ใน Calculator"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></button>
+          <button class="btn-icon edit" data-id="${tag.id}" title="แก้ไข"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></button>
+          <button class="btn-icon delete" data-id="${tag.id}" title="ลบ"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
         </div>
       </td>`;
     tbody.appendChild(tr);

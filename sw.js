@@ -1,4 +1,4 @@
-const CACHE = 'raw-to-pv-v4';
+const CACHE = 'raw-to-pv-v5';
 const ASSETS = [
   '.',
   'index.html',
@@ -6,7 +6,8 @@ const ASSETS = [
   'js/app.js',
   'manifest.json',
   'icons/icon-192.png',
-  'icons/icon-512.png'
+  'icons/icon-512.png',
+  'icons/aicoder-badge.svg'
 ];
 
 self.addEventListener('install', e => {

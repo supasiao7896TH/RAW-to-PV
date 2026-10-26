@@ -7,7 +7,8 @@
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#141820">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <meta name="theme-color" content="#f4f6f9">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -16,8 +17,18 @@
 
   <!-- SEO / OG -->
   <meta name="description" content="แปลงค่า RAW% เป็น PV จริงสำหรับ DCS Yokogawa — รองรับ SVH, SVL, Tag Library และ Batch Mode">
+  <meta property="og:title" content="RAW → PV Calculator | DCS Yokogawa">
+  <meta property="og:description" content="แปลงค่า RAW% เป็น PV จริงสำหรับ DCS Yokogawa — รองรับ SVH, SVL, Tag Library และ Batch Mode">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="icons/icon-512.png">
 
   <link rel="stylesheet" href="css/style.css">
+
+  <script>
+    if (localStorage.getItem('dcs_theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
 
   <!-- SOICODER brand badge font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,14 +45,19 @@
           <p class="header-sub">DCS Yokogawa Tag Converter</p>
         </div>
       </div>
-      <div class="header-formula">
-        <span class="formula-label">สูตร:</span>
-        <span class="formula-text">PV = SVL + (RAW% ÷ 100) × (SVH − SVL)</span>
+      <div class="header-right">
+        <div class="header-formula">
+          <span class="formula-label">สูตร:</span>
+          <span class="formula-text">PV = SVL + (RAW% ÷ 100) × (SVH − SVL)</span>
+        </div>
+        <button id="theme-toggle" class="btn-theme-toggle" type="button" aria-label="สลับโหมด มืด/สว่าง" title="สลับโหมด มืด/สว่าง">
+          <span class="theme-toggle-icon" id="theme-icon">🌙</span>
+        </button>
       </div>
     </div>
   </header>
 
-  <div class="container">
+  <main class="container">
     <div class="tabs">
       <button class="tab-btn active" data-tab="calculator">
         <span class="tab-icon">🔢</span> Calculator
@@ -258,7 +274,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </main>
 
   <footer class="app-footer">
     <div class="soicoder-badge">
@@ -339,7 +355,9 @@
   <script src="js/app.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
     }
   </script>
 </body>

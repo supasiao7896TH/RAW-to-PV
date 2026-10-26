@@ -612,9 +612,45 @@ function updateTagCount() {
 }
 
 // ──────────────────────────────────────────────
+// THEME (Default: Light, toggleable to Dark)
+// ──────────────────────────────────────────────
+const THEME_KEY = 'dcs_theme';
+
+function getPreferredTheme() {
+  return localStorage.getItem(THEME_KEY) || 'light';
+}
+
+function applyTheme(theme) {
+  const icon = document.getElementById('theme-icon');
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    if (icon) icon.textContent = '☀️';
+    if (themeColor) themeColor.setAttribute('content', '#141820');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    if (icon) icon.textContent = '🌙';
+    if (themeColor) themeColor.setAttribute('content', '#f4f6f9');
+  }
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  const next = current === 'dark' ? 'light' : 'dark';
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
+}
+
+const themeToggleBtn = document.getElementById('theme-toggle');
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener('click', toggleTheme);
+}
+
+// ──────────────────────────────────────────────
 // INIT
 // ──────────────────────────────────────────────
 (function init() {
+  applyTheme(getPreferredTheme());
   renderLibrary();
 
   // Pre-load sample tags if library is empty
